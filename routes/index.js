@@ -41,6 +41,7 @@ router.post("/api/login", async (req, res) => {
     console.log(req.body)
     let { email, password } = req.body
     const user = await registerModel.findOne({ email })
+    console.log(user)
     if (!user) {
       return res.json({ success: false, message: "invalid user" })
     }
@@ -51,7 +52,7 @@ router.post("/api/login", async (req, res) => {
     const JWT_SECRET = process.env.JWT_SECRET;
 
     const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET)
-    console.log(token, 111111)
+
     return res.json({ success: true, token })
   } catch (error) {
     res.json({ success: false, message: error.message })
@@ -195,7 +196,7 @@ router.post("/api/user/post", authenticate, upload.single("post"), async (req, r
     if (!registerUser) {
       return res.json({ success: false, message: "invalid user" })
     }
-    const postUser = await postModel({
+    const postUser = await postModel.create({
       user: registerUser,
       posts: req.file.filename,
       dp: registerUser.dp,
