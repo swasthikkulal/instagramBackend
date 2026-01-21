@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var dotenv = require('dotenv');
+var cors = require("cors");
 
 dotenv.config(); // Load .env
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error("MongoDB connection error:", err));
 
 var app = express();
+app.use(cors());
 
 // view engine setup (optional if you have no views)
 app.set('views', path.join(__dirname, 'views'));
